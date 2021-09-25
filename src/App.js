@@ -12,7 +12,7 @@ const initialtodo = [
 
 
 function App() {
-    const [data, updateData] = useState(JSON.parse(localStorage.getItem('notes')) || initialtodo);
+    const [data, updateData] = useState(JSON.parse(localStorage.getItem('iappreacttodonotemlffxnote')) || initialtodo);
     const [item, updateItem] = useState([]);
 
     const [searchStat, setSearchStat] = useState(false);
@@ -75,7 +75,7 @@ function App() {
 
     useEffect(() => {
         document.title = data.length === 0 ? 'TO-DO' : `(${data.length}) TO-DO`
-        localStorage.setItem('notes', JSON.stringify(data));
+        localStorage.setItem('iappreacttodonotemlffxnote', JSON.stringify(data));
         return () => {
         }
     }, [data, data.length])
