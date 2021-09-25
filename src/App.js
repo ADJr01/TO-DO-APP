@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import styles from './components/Style/app.module.css'
 import ViewContainer from "./components/View/ViewContainer";
 import Footer from "./components/Footer";
@@ -12,30 +12,27 @@ const initialtodo = [
 
 
 function App() {
-    const [data,updateData] = useState(JSON.parse(localStorage.getItem('notes')) || initialtodo);
-    const [item,updateItem] = useState([]);
-    //search stat handle
+    const [data, updateData] = useState(JSON.parse(localStorage.getItem('notes')) || initialtodo);
+    const [item, updateItem] = useState([]);
+
     const [searchStat, setSearchStat] = useState(false);
-    const [searchText,setSearchText] = useState('');
+    const [searchText, setSearchText] = useState('');
 
-    useEffect(()=>{
-        const searchOnData = setTimeout(()=>{
-            if(searchStat){
-                updateItem(new Search(data,searchText).find_then_serve())
+    useEffect(() => {
+        const search_data = setTimeout(() => {
+            if (searchStat) {
+                updateItem(new Search(data, searchText).find_then_serve())
             }
-        },350);
+        }, 350);
 
-        if(!searchStat && item!==[]){
+        if (!searchStat && item !== []) {
             updateItem([]);
         }
 
-        return ()=> clearTimeout(searchOnData);
+        return () => clearTimeout(search_data);
 
 
     },[data,searchStat,searchText])
-
-
-    //===========End search stat=========//
 
 
     const [popUpStat, setPopUpStat] = useState({open: false, type: 0, src: ''});
@@ -60,12 +57,6 @@ function App() {
                 return prev.map((e, i) => i === indexToUpdate ? Changeitem.new_text_src : e)
             });
 
-            if(searchStat){
-                if(!Changeitem.new_text_src.toLowerCase().includes(searchText.toLowerCase())){
-                    const index = parseInt(Changeitem.src.text_index, 10);
-                    updateItem(pre=>pre.map((e,i)=>(i===index)?false:e))
-                }
-            }
 
 
         } else if (Changeitem.new_text_src === '') {
@@ -79,9 +70,7 @@ function App() {
         updateData(prev => {
             return prev.filter((e, i) => i !== index)
         });
-        if(searchStat){
-            updateItem(pre=>pre.map((e,i)=>(i===index)?false:e))
-        }
+
     }
 
     useEffect(() => {
@@ -92,7 +81,7 @@ function App() {
     }, [data, data.length])
 
     useEffect(()=>{
-        popUpStat && searchStat && setSearchText('') && setSearchStat(false)
+        popUpStat.type === 1 && searchStat && setSearchText('') && setSearchStat(false)
 
     },[popUpStat,searchStat])
 
